@@ -35,7 +35,6 @@ $dispatcher->pipe( new \Middleware\TraininSlashMiddleWare() ) ;
 $dispatcher->pipe( new \Psr7Middlewares\Middleware\Uuid()) ;
 $dispatcher->pipe( new \Psr7Middlewares\Middleware\FormatNegotiator() ) ;
 $dispatcher->pipe( new \Middleware\MiddleWare() ) ;
-$dispatcher->pipe( $trainingSlashMiddleWare2 ) ;
 $dispatcher->pipe( new \Middleware\App() ) ;
 send($dispatcher->process($request,$response));
 
