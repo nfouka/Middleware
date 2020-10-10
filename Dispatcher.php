@@ -1,6 +1,9 @@
 <?php
 
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 class Dispatcher
 {
 
@@ -19,7 +22,7 @@ class Dispatcher
         $this->middlewares[] = $trainingSlash ;
     }
 
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
+    public function process(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
         $middleware = $this->getMiddleware();
         $this->index++;
