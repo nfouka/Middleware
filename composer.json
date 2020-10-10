@@ -1,0 +1,23 @@
+{
+    "name": "fouka/middleware",
+    "description": "middleware",
+    "authors": [
+        {
+            "name": "nfouka",
+            "email": "nadir.fouka@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Middleware\\": "Middleware/"
+        }
+    },
+    "require": {
+        "psr/http-message": "^1.0",
+        "guzzlehttp/psr7": "^1.7",
+        "http-interop/response-sender": "^1.0",
+        "oscarotero/psr7-middlewares": "^3.21",
+        "willdurand/negotiation": "^2.3",
+        "ramsey/uuid": "^4.1"
+    }
+}
