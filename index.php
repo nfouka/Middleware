@@ -29,29 +29,15 @@ $trainingSlashMiddleWare2 = function(ServerRequestInterface $request, ResponseIn
 };
 
 
-$app =  function(ServerRequestInterface $request, ResponseInterface $response , callable $next) {
-
-    $url = $request->getUri()->getPath() ;
-    if($url === '/blog') {
-        $response->getBody()->write('Je suis sur le blog');
-    }elseif ( $url === '/contact'){
-        $response->getBody()->write('Je suis sur le contact');
-    }else{
-        $response->getBody()->write('Not Found');
-        $response->withStatus(400) ;
-    }
-    return $response ;
-
-};
 
 
 $dispatcher = new Dispatcher();
 $dispatcher->pipe( new \Middleware\TraininSlashMiddleWare() ) ;
 $dispatcher->pipe( new \Psr7Middlewares\Middleware\Uuid()) ;
 $dispatcher->pipe( new \Psr7Middlewares\Middleware\FormatNegotiator() ) ;
-$dispatcher->pipe( $trainingSlashMiddleWare ) ;
+$dispatcher->pipe( new \Middleware\MiddleWare() ) ;
 $dispatcher->pipe( $trainingSlashMiddleWare2 ) ;
-$dispatcher->pipe( $app ) ;
+$dispatcher->pipe( new \Middleware\App() ) ;
 
 
 
