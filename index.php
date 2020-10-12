@@ -1,55 +1,58 @@
 <?php
 
-require './vendor/autoload.php' ;
-require 'Dispatcher.php';
 
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\ServerRequest;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use function Http\Response\send;
+require 'DIC.php';
 
+class Connection {
 
-$request = ServerRequest::fromGlobals();
-$response= new Response() ;
+    private $db_name;
+    private $db_user;
+    private $db_pass;
 
-
-$trainingSlashMiddleWare = function(ServerRequestInterface $request, ResponseInterface $response , callable $next){
-    $response->getBody()->write('*');
-    $response =  $next($request,$response) ;
-    $response->getBody()->write('*');
-    return $response ;
-};
-
-$trainingSlashMiddleWare2 = function(ServerRequestInterface $request, ResponseInterface $response , callable $next){
-    $response->getBody()->write('^');
-    $response =  $next($request,$response) ;
-    $response->getBody()->write('^');
-    return $response ;
-};
+    /**
+     * Connection constructor.
+     * @param $db_name
+     * @param $db_user
+     * @param $db_pass
+     */
+    public function __construct($db_name, $db_user, $db_pass)
+    {
+        $this->db_name = $db_name;
+        $this->db_user = $db_user;
+        $this->db_pass = $db_pass;
+    }
 
 
+}
 
-$dispatcher = new Dispatcher();
-$dispatcher->pipe( new \Middleware\TraininSlashMiddleWare() ) ;
-$dispatcher->pipe( new \Psr7Middlewares\Middleware\Uuid()) ;
-$dispatcher->pipe( new \Psr7Middlewares\Middleware\FormatNegotiator() ) ;
-$dispatcher->pipe( new \Middleware\MiddleWare() ) ;
-$dispatcher->pipe( new \Middleware\App() ) ;
-send($dispatcher->process($request,$response));
+class Model {
 
+    private $connection;
 
-
-
-
-
-
-
+    /**
+     * Model constructor.
+     * @param $connection
+     */
+    public function __construct(Connection  $connection)
+    {
+        $this->connection = $connection;
+    }
 
 
+}
+
+$connection = new Connection('root','root','root') ;
+$model      = new Model($connection) ;
 
 
+$dic = new DIC() ;
+$dic->set('connection',function(){
+    return new Connection('root','root','root') ;
+});
+
+$dic->set('model',function() use ($dic) {
+    return new Model($dic->get('connection'));
+});
 
 
-
-
+var_dump($dic->get(('model')));
