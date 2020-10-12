@@ -3,56 +3,48 @@
 
 require 'DIC.php';
 
-class Connection {
 
-    private $db_name;
-    private $db_user;
-    private $db_pass;
+
+class Foo {
+
+}
+
+class Zoo {
+
+}
+
+Class Bar {
+
+
+    private $foo ;
+    private $zoo ;
 
     /**
-     * Connection constructor.
-     * @param $db_name
-     * @param $db_user
-     * @param $db_pass
+     * Bar constructor.
+     * @param $foo
      */
-    public function __construct($db_name, $db_user, $db_pass)
+    public function __construct(Foo $foo,$tab=[] , Zoo $zoo )
     {
-        $this->db_name = $db_name;
-        $this->db_user = $db_user;
-        $this->db_pass = $db_pass;
+        $this->foo = $foo;
+        $this->foo = $zoo;
     }
+
+        public function sayHello(){
+                return  "hello";
+        }
 
 
 }
 
-class Model {
-
-    private $connection;
-
-    /**
-     * Model constructor.
-     * @param $connection
-     */
-    public function __construct(Connection  $connection)
-    {
-        $this->connection = $connection;
-    }
 
 
-}
+$app = new DIC();
 
-$connection = new Connection('root','root','root') ;
-$model      = new Model($connection) ;
-
-
-$dic = new DIC() ;
-$dic->set('connection',function(){
-    return new Connection('root','root','root') ;
-});
-
-$dic->set('model',function() use ($dic) {
-    return new Model($dic->get('connection'));
+$app->set('Foo', function($app){
+    return new Foo();
 });
 
 
-var_dump($dic->get(('model')));
+var_dump($app->get('Foo'));
+
+
